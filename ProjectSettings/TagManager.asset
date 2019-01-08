@@ -8,6 +8,9 @@ TagManager:
   - Projectile
   - PlayerShooting
   - Enemy
+  - DeadBody
+  - EnemyProjectile
+  - GameWorld
   layers:
   - Default
   - TransparentFX

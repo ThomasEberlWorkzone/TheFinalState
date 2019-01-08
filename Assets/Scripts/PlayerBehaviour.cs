@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerBehaviour : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class PlayerBehaviour : MonoBehaviour {
 
     private Rigidbody2D rb2d;
     private Vector2 newLocation;
+
+    private int health = 100;
 
 	// Use this for initialization
 	void Start ()
@@ -22,8 +25,11 @@ public class PlayerBehaviour : MonoBehaviour {
     {
         updatePlayerPositon();        
         updatePlayerRotation();
-    }
 
+        checkIfPlayerDead();
+        checkIfWon();
+    }
+    
     private void updatePlayerPositon()
     {
         //get input of user of game object
@@ -34,7 +40,12 @@ public class PlayerBehaviour : MonoBehaviour {
 
         float xPos = transform.position.x;
         float yPos = transform.position.y;
-        Camera.main.transform.position = new Vector3(xPos, yPos, -10);
+    }
+
+    public void TakeDamage()
+    {
+        health -= 25;
+        Debug.Log("Damage Taken");
     }
 
     //todo fix mouse rotation, so that player always turns towards crosshair
@@ -60,5 +71,33 @@ public class PlayerBehaviour : MonoBehaviour {
     {
         rb2d.MovePosition(newLocation);
         rb2d.angularVelocity = 0;
+    }
+
+    private void checkIfPlayerDead()
+    {
+        if(health <= 0)
+        {
+            Cursor.visible = true;
+
+            SceneManager.LoadScene("GameOverScreen");
+        }
+    }
+
+    private void checkIfWon()
+    {
+        if (GameObject.FindGameObjectsWithTag("Enemy").Length == 0)
+        {
+            Cursor.visible = true;
+
+            SceneManager.LoadScene("WinScreen");
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag == "EnemyProjectile")
+        {
+            Debug.Log("Enemy Hit");
+        }
     }
 }

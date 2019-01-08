@@ -63,6 +63,9 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\AI_Behaviour.cs" />
     <Compile Include="Assets\Scripts\ButtonScripts.cs" />
+    <Compile Include="Assets\Scripts\CrosshairBehaviour.cs" />
+    <Compile Include="Assets\Scripts\EnemyProjectileBehaviour.cs" />
+    <Compile Include="Assets\Scripts\MenuManager.cs" />
     <Compile Include="Assets\Scripts\PlayerBehaviour.cs" />
     <Compile Include="Assets\Scripts\ProjecileBehaviour.cs" />
     <Reference Include="UnityEditor.StandardEvents">

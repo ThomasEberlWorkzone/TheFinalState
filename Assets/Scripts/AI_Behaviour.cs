@@ -9,8 +9,12 @@ public class AI_Behaviour : MonoBehaviour
     private int startRotation;
     private bool rotatingUp;
     private const int DIST = 1000;
+    private const float VELO_FACTOR = 10000f;
+
 
     private int health = 100;
+
+    public AudioClip EnemyHurt;
 
 	void Start ()
     {
@@ -18,17 +22,25 @@ public class AI_Behaviour : MonoBehaviour
         startRotation = (int) transform.eulerAngles.z;
 
         InvokeRepeating("Rotate", 0, 0.01f);
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
+        InvokeRepeating("Fire",0,1);
 
     }
 
-    private void UpdateLineOfSight()
+    // Update is called once per frame
+    void Update ()
     {
+        
+    }
 
+    void FixedUpdate()
+    {
+        Vector3 direction = DegreeToVector2(rotation);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction);
+
+        if (hit.collider.name.Equals("CommunistIdle"))
+        {
+            Debug.Log("Hit:" + hit.collider.name);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D coll)
@@ -37,7 +49,10 @@ public class AI_Behaviour : MonoBehaviour
         {
             health -= 25;
 
-            setPlayerInactive(isAlive());
+            AudioSource audioSource = GetComponent<AudioSource>();
+            audioSource.PlayOneShot(EnemyHurt);
+            Destroy(coll.gameObject);
+            killPlayer(isAlive());
         }
     }
 
@@ -49,9 +64,19 @@ public class AI_Behaviour : MonoBehaviour
         return false;
     }
 
-    private void setPlayerInactive(bool isAlive)
+    private void killPlayer(bool isAlive)
     {
-        gameObject.SetActive(isAlive);
+        if(!isAlive)
+        {
+            float xPos = transform.position.x;
+            float yPos = transform.position.y;
+
+            Vector3 enemyPos = new Vector3(xPos, yPos, 0);
+            Quaternion enemyRot = transform.rotation;
+            gameObject.SetActive(isAlive);
+            Destroy(this);
+            Instantiate(GameObject.FindWithTag("DeadBody"), enemyPos, enemyRot);
+        }
     }
 
 
@@ -76,5 +101,19 @@ public class AI_Behaviour : MonoBehaviour
             rotation -= 1;
             transform.rotation = Quaternion.Euler(0, 0, rotation);
         }
+    }
+
+    public static Vector2 DegreeToVector2(float degree)
+    {
+        return new Vector2(Mathf.Cos(degree * Mathf.Deg2Rad), Mathf.Sin(degree * Mathf.Deg2Rad));
+    }
+
+    private void Fire()
+    {
+        GameObject bullet = Instantiate(GameObject.FindGameObjectWithTag("EnemyProjectile"), transform.position, Quaternion.Euler(0,0,rotation-90));
+        bullet.GetComponent<Rigidbody2D>().AddForce(DegreeToVector2(rotation-90)*1000);
+        bullet.GetComponent<Rigidbody2D>().isKinematic = false;
+
+        Destroy(bullet, 2f);
     }
 }

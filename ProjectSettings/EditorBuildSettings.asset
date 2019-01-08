@@ -8,4 +8,19 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 0c80a831dd67a6d4b80a128360745f1e
+  - enabled: 1
+    path: Assets/Scenes/Room1Scene.unity
+    guid: 928e334659dcb744da38d60ff5971503
+  - enabled: 1
+    path: Assets/Scenes/WinScreen.unity
+    guid: 9aa754ecb2a61ef44916c6bda77df2af
+  - enabled: 1
+    path: Assets/Scenes/RoomScene.unity
+    guid: 12589d30425fd1544a50833f00b3ba1a
+  - enabled: 1
+    path: Assets/Scenes/GameOverScreen.unity
+    guid: c9628295ff3251640b71e66c2870e8d6
   m_configObjects: {}

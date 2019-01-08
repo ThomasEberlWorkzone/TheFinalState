@@ -13,6 +13,8 @@ public class ProjecileBehaviour : MonoBehaviour
 
     private GameObject projectile;
 
+    public AudioClip Gunshot;
+
     // Use this for initialization
     void Start()
     {
@@ -47,6 +49,9 @@ public class ProjecileBehaviour : MonoBehaviour
         GameObject bullet = Instantiate(GameObject.FindGameObjectWithTag("Projectile"), playerPosition, rotation);
         bullet.GetComponent<Rigidbody2D>().AddForce((crosshairPosition - playerPosition) * absolutFactor);
         bullet.GetComponent<Rigidbody2D>().isKinematic = false;
+
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(Gunshot);
 
         Destroy(bullet, 4f);
 
